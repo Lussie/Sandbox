@@ -29,8 +29,13 @@ data = [['Grinning', 2.26, 1.02, 87.3],
 columns = ['name', 'emojixpress', 'instagram', 'twitter']
 df = pd.DataFrame(data = data, columns = columns)
 
-# print('|{: ^20}|'.format('name'))
-
+# выведем табицу на экран
+# print(df)
+print('|{: ^20}|{: ^20}|{: ^20}|{: ^20}|'.format('name', 'emojixpress', 'instagram', 'twitter'))
+print('-------------------------------------------------------------------------------------')
+for row in df:
+        print('|{: >20.2f}|{: >20.2f}|{: >20.2f}|{: >20.2f}|'.format(int(row[0]), int(row[1]), int(row[2]), int(row[3])))
+print()
 
 # количество всех эмодзи в EmojiXpress в миллионах
 emojixpress_total = 1720
