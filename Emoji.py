@@ -29,14 +29,6 @@ data = [['Grinning', 2.26, 1.02, 87.3],
 columns = ['name', 'emojixpress', 'instagram', 'twitter']
 df = pd.DataFrame(data = data, columns = columns)
 
-# выведем табицу на экран
-# print(df)
-print('|{: ^20}|{: ^20}|{: ^20}|{: ^20}|'.format('name', 'emojixpress', 'instagram', 'twitter'))
-print('-------------------------------------------------------------------------------------')
-for row in df:
-        print('|{: >20.2f}|{: >20.2f}|{: >20.2f}|{: >20.2f}|'.format(int(row[0]), int(row[1]), int(row[2]), int(row[3])))
-print()
-
 # количество всех эмодзи в EmojiXpress в миллионах
 emojixpress_total = 1720
 
@@ -45,12 +37,37 @@ twitter_total = 24500
 
 
 # Функция считает сумму всех выбранных эмодзи в конкретном источнике (столбце)
-def emoji_count(df, column):
-    emoji_count = 0
+def emoji_sum(df, column):
+    emoji_sum = 0
     for i in df.loc[:, column]:
-        emoji_count += i
-    return emoji_count
+        emoji_sum += i
+    return emoji_sum
+
+# Функция считает, сколько в среднем сообщений с топовыми эмодзи отправляются в конкретном источнике (столбце)
+def emoji_mean(df, column):
+        return emoji_sum(df, column) / len(data)
 
 
-print('Доля выбранных эмодзи в EmojiXpress: {:.1%}'.format(emoji_count(df, 'emojixpress') / emojixpress_total))
-print('Доля выбранных эмодзи в Twitter: {:.1%}'.format(emoji_count(df, 'twitter') / twitter_total))
+# df.info()
+# print(df)
+# print()
+
+print('Доля выбранных эмодзи в EmojiXpress: {:.1%}'.format(emoji_sum(df, 'emojixpress') / emojixpress_total))
+print('Доля выбранных эмодзи в Twitter: {:.1%}'.format(emoji_sum(df, 'twitter') / twitter_total))
+print()
+print('Сколько всего топовых эмодзи отправляется в EmojiXpress (в миллионах): {: .2f}'.format(emoji_sum(df, 'emojixpress')))
+print('Сколько всего топовых эмодзи отправляется в Instagram (в миллионах): {: .2f}'.format(emoji_sum(df, 'instagram')))
+print('Сколько всего топовых эмодзи отправляется в Twitter (в миллионах): {: .2f}'.format(emoji_sum(df, 'twitter')))
+print()
+print('Сколько в среднем (в миллионах) сообщений с топовыми эмодзи отправляются в разных источниках:')
+print()
+print('Emojixpress, млн. | Instagram, млн. | Twitter, млн.')
+print('---------------------------------------------------')
+print('{: ^16.2f} | {: ^14.2f} | {: ^12.2f}'.format(emoji_mean(df, 'emojixpress'), emoji_mean(df, 'instagram'), emoji_mean(df, 'twitter')))
+print()
+print('Cоотношение количества конкретного эмодзи в Твиттере к его количеству в Instagram:')
+print()
+print('Название эмодзи  | Соотношение Твиттер/Instagram')
+print('------------------------------------------------')
+for row in data:
+    print('{: <16} | {: >29.2f}'.format(row[0], (row[3] / row[2])))
