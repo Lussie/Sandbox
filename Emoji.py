@@ -71,3 +71,52 @@ print('Название эмодзи  | Соотношение Твиттер/In
 print('------------------------------------------------')
 for row in data:
     print('{: <16} | {: >29.2f}'.format(row[0], (row[3] / row[2])))
+
+# таблица с общей суммой каждого эмодзи, отсортированная по убыванию
+
+for i in range(len(data)):
+    data[i].append(data[i][1] + data[i][2] + data[i][3])
+
+data.sort(key=lambda row: row[4], reverse=True)
+
+print()
+print('Cуммарное количество использований на всех платформах')
+print()
+print('Название эмодзи  | Суммарное использование, млн.')
+print('------------------------------------------------')
+for row in data:
+    print('{: <16} | {: >29.2f}'.format(row[0], row[4]))
+
+# рассчитываем индекс использования
+
+emojixpress_mean = 0
+instagram_mean = 0
+twitter_mean = 0
+for row in data:
+    emojixpress_mean += row[1]
+    instagram_mean += row[2]
+    twitter_mean += row[3]
+
+emojixpress_mean /= len(data)
+instagram_mean /= len(data)
+twitter_mean /= len(data)
+
+for i in range(len(data)):
+    data[i].append(
+        data[i][1] / emojixpress_mean +
+        data[i][2] / instagram_mean +
+        data[i][3] / twitter_mean
+    )
+
+
+data.sort(key=lambda row: row[5], reverse=True)     # сортируем по новому столбцу по убыванию
+
+print()
+print('Название эмодзи  | Индекс использования')
+print('---------------------------------------')
+for row in data[:5]:    # выводим только первые пять
+    print('{: <16} | {: >20.2f}'.format(row[0], row[5]))
+print()
+print('Выводы:')
+print('- Большинство используемых эмодзи связаны с положительными эмоциями')
+print('- На разных платформах самые популярные эмодзи похожи, хотя и может различаться их порядок в топе')
