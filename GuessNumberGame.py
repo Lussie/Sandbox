@@ -1,8 +1,10 @@
 # Настройки
 print('Задай границы загадываемого числа')
 a = int(input('Нижняя граница = '))
-b = int(input('Верхняя граница = '))
-print(f'Загадай число от {a} до {b}...')
+b = int(input('Верхняя граница = ')) + 1 # добавляем 1, чтобы включалась верхняя граница
+if a > b:
+    print('Попробуй еще раз')
+print(f'Загадай число от {a} до {b-1}...')
 
 # Определяем функцию, которая будет печатать правила
 def print_rules():
@@ -16,28 +18,38 @@ def print_rules():
     print(rules)
     print()
 
+
 # Даем время подумать
 import time
-time.sleep(2)
+
+time.sleep(1)
 print('Загадал?')
-time.sleep(2)
+time.sleep(1)
 print('Тогда начинаем!')
-time.sleep(2)
+time.sleep(1)
 
 print_rules()
 
 x = 0
+steps = 0
 
 while True:
-    x = int(a + (b-a)/2)
-    print(x)
-    N = input()
-    if N == '>':
-        a = x
-    if N == '<':
-        b = x
-    if N == '=':
-        print('Ура! Угадал!')
+    x = a + (b - a) // 2
+    if a == b:
+        print(f'Все понятно! Ответ - {a}!')
         break
+    answer = input(f'Это {x}? ')
+    if answer == '>':
+        a = x+1 # x уже отработали, он не подходит, поэтому берем следующее - уменьшаем количество шагов
+        steps += 1
+    elif answer == '<':
+        b = x-1 # x уже отработали, он не подходит, поэтому берем следующее - уменьшаем количество шагов
+        steps += 1
+    elif answer == '=':
+        print('Ура! Угадал!')
+        steps += 1
+        break
+    else:
+        print_rules()
 
-print(f'Ты загадал число {x}')
+print(f'Ты загадал число {x} \nПотребовалось шагов: {steps}')
